@@ -1,8 +1,26 @@
+import { Link } from 'react-router-dom'
+import { useFetch } from '../hooks/useFetch'
+
+//styles 
+import './Home.css'
+
 export default function Home() {
+
+    const { data: articles, isPending, error } = useFetch('http://localhost:3000/articles')
     return (
-        <div>
-            <h2>Home Page</h2>
-            <p>Qui non reprehenderit id amet. Sint officia occaecat consectetur excepteur eiusmod laboris sint reprehenderit id. Ullamco labore amet amet eu ut sit. Mollit et ut enim cupidatat eu ad deserunt aliquip ea tempor qui elit. Laborum sit Lorem tempor Lorem Lorem consequat voluptate quis ut tempor cupidatat Lorem. Esse et anim officia culpa tempor qui sunt anim.</p>
+        <div className="home">
+
+            <h2>Articoli</h2>
+
+            {isPending && <div>Loading... </div>}
+            {error && <div>{error}</div>}
+            {articles && articles.map((article) => (
+                <div key={article.id} className="card">
+                    <h3>{article.title}</h3>
+                    <p>{article.author}</p>
+                    <Link to={`/articles/${article.id}`}>Leggi ancora...</Link>
+                    </div>
+            ))}
         </div>
     )
 }
